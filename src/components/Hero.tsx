@@ -11,10 +11,10 @@ export const Hero: React.FC = () => {
         <div className="lg:col-span-7 space-y-7 text-left">
 
           {/* Headline with Masked Typography Rise */}
-          <div className="overflow-hidden">
-            <h1 className="font-editorial text-4xl sm:text-6xl xl:text-7xl font-normal leading-[1.08] tracking-tight text-[#221F1F] animate-masked-rise">
+          <div className="overflow-hidden pt-2 pb-4 -mb-4 pr-4">
+            <h1 className="font-editorial text-4xl sm:text-6xl xl:text-7xl font-normal leading-[1.2] sm:leading-[1.15] tracking-tight text-[#221F1F] animate-masked-rise pb-2">
               Lưu Giữ Nét Đẹp <br />
-              <span className="italic font-serif font-light text-[#CF9297]">
+              <span className="italic font-serif font-light text-[#CF9297] inline-block pr-2">
                 Nàng Thơ
               </span>{' '}
               & Thanh Xuân
