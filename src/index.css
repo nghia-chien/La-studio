@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+
+  --color-canvas: #FAF8F5;
+  --color-surface: #FFFFFF;
+  --color-surface-soft: #F6F2EC;
+  
+  --color-blush-50: #FFF5F6;
+  --color-blush-100: #FAEBED;
+  --color-blush-200: #F3D3D7;
+  --color-blush-300: #E8C5C8;
+  --color-blush-400: #DEB1B5;
+  --color-blush-500: #CF9297;
+
+  --color-beige-50: #FCFAF7;
+  --color-beige-100: #F5EFEB;
+  --color-beige-200: #EAE2D8;
+  --color-beige-300: #DCD0C2;
+  --color-beige-400: #C4B6A3;
+
+  --color-charcoal-900: #221F1F;
+  --color-charcoal-800: #332E2D;
+  --color-charcoal-700: #4A4443;
+  --color-charcoal-500: #78706E;
+  --color-charcoal-400: #968E8C;
+  --color-charcoal-300: #B5ACA9;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-charcoal-900);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+  }
+
+  h1, h2, h3, .font-editorial {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #E8C5C8;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #CF9297;
+}
+
+/* Image reveal curtain effect */
+@keyframes curtainReveal {
+  from {
+    clip-path: inset(100% 0 0 0);
+    transform: scale(1.08);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: scale(1);
+  }
+}
+
+/* Masked rise text reveal */
+@keyframes maskedRise {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-curtain {
+  animation: curtainReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-masked-rise {
+  animation: maskedRise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,14 @@
+# agent & working files
+.agent/
+rule.md
+sale.md
+landing-page-process.md
+design-playbook.md
+motion-playbook.md
+lessons.md
+public/layout/
+
+# dependencies & build
+node_modules/
+dist/
+temp_app/
