@@ -13,10 +13,10 @@ interface GalleryItem {
 const GALLERY_ITEMS: GalleryItem[] = [
   {
     id: 'g-1',
-    type: 'image',
-    url: '/images/843042263_122147698131349763_3697492828306771257_n.jpg',
-    title: 'Nàng Thơ Trong Trẻo',
-    concept: 'Hoa Đào & Voan Trắng',
+    type: 'video',
+    url: '/video/ngau.mp4',
+    title: 'Chuyển Động Thời Thượng',
+    concept: 'Modern Chic Reel 4K',
     spanClass: 'sm:col-span-2 sm:row-span-2 aspect-[3/4] sm:aspect-auto',
   },
   {
@@ -29,10 +29,10 @@ const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: 'g-3',
-    type: 'video',
-    url: '/video/ngau.mp4',
-    title: 'Chuyển Động Thời Thượng',
-    concept: 'Modern Chic Reel 4K',
+    type: 'image',
+    url: '/images/843042263_122147698131349763_3697492828306771257_n.jpg',
+    title: 'Nàng Thơ Trong Trẻo',
+    concept: 'Hoa Đào & Voan Trắng',
     spanClass: 'aspect-[3/4]',
   },
   {

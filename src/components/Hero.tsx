@@ -23,7 +23,7 @@ export const Hero: React.FC = () => {
 
           {/* Subheading */}
           <p className="text-base sm:text-lg text-[#4A4443] font-normal leading-relaxed max-w-xl">
-            Mỗi cô gái đều mang trong mình một khí chất độc bản. Tại La Studio, chúng tôi không chụp những bức ảnh rập khuôn — chúng tôi cùng bạn đánh thức sự tự tin, nét rạng rỡ và vẻ đẹp trong trẻo nhất qua lăng kính nghệ thuật.
+            Mỗi cô gái đều có khí chất riêng. La Studio không chụp ảnh rập khuôn mà cùng bạn đánh thức sự tự tin, rạng rỡ và vẻ đẹp trong trẻo qua lăng kính nghệ thuật.
           </p>
 
           {/* Action CTAs */}
