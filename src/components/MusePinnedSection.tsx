@@ -79,16 +79,19 @@ export const MusePinnedSection: React.FC = () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion || !sectionRef.current || !headingRef.current) return;
 
-    // GSAP Context ensures proper scoping and memory cleanup
-    const ctx = gsap.context(() => {
+    // matchMedia scopes the setup to desktop and reverts it automatically when the query stops matching,
+    // so mobile never gets the pin or the scroll scrub
+    const mm = gsap.matchMedia(sectionRef.current);
+
+    mm.add('(min-width: 768px)', () => {
       // 1. PIN THE "MUSE" HEADING TO EXACT VIEWPORT CENTER DURING SCROLL
       // Pins when center of MUSE reaches center of viewport,
-      // and unpins when section bottom reaches viewport bottom (before next section enters)
+      // and unpins when section bottom reaches 85% of the viewport (before next section enters)
       ScrollTrigger.create({
         trigger: headingRef.current,
         start: 'center center',
         endTrigger: sectionRef.current,
-        end: 'bottom bottom',
+        end: 'bottom 85%',
         pin: headingRef.current,
         pinSpacing: false,
         invalidateOnRefresh: true,
@@ -106,14 +109,14 @@ export const MusePinnedSection: React.FC = () => {
         },
         opacity: 0,
         y: -40,
-        filter: 'blur(10px)',
+        filter: 'blur(4px)',
         ease: 'power1.in',
       });
 
       // 3. BIDIRECTIONAL VIEWPORT FADE IN / FADE OUT TIED TO SCROLL UP & DOWN
       // As user scrolls down, cards fade in & sharpen when entering the viewport,
       // remain 100% sharp & visible in the center reading zone,
-      // and gently blur & fade out as they leave the top.
+      // and fade out (without blur) as they leave the top.
       // When scrolling up, it reverses in real time!
       const cards = gsap.utils.toArray<HTMLElement>('.scattered-card');
 
@@ -154,23 +157,20 @@ export const MusePinnedSection: React.FC = () => {
           filter: 'blur(0px)',
           duration: 0.5,
         })
-        // Phase 3 (75% -> 100%): Exiting top of viewport — softly blurs and fades out
+        // Phase 3 (75% -> 100%): Exiting top of viewport — fades out and drifts up, no blur
         .to(card, {
           opacity: 0,
-          y: -60,
-          scale: 0.94,
-          filter: 'blur(10px)',
+          y: -20,
           duration: 0.25,
           ease: 'power2.in',
         });
       });
-    }, sectionRef);
-
-    // Refresh ScrollTrigger after assets initialize
-    ScrollTrigger.refresh();
+      // Refresh ScrollTrigger after assets initialize
+      ScrollTrigger.refresh();
+    });
 
     return () => {
-      ctx.revert(); // clean up GSAP ScrollTrigger instances
+      mm.revert(); // clean up GSAP ScrollTrigger instances
     };
   }, []);
 

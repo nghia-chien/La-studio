@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 
 interface GalleryItem {
@@ -80,6 +80,34 @@ const GALLERY_ITEMS: GalleryItem[] = [
 export const GalleryWall: React.FC = () => {
   const [videoMuted, setVideoMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Staggered fade-in: items entering the viewport together reveal 0.12s apart, once each
+  useEffect(() => {
+    const items = itemRefs.current.filter((el): el is HTMLDivElement => el !== null);
+
+    if (!('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .forEach((entry, batchIndex) => {
+            const el = entry.target as HTMLElement;
+            el.style.transitionDelay = `${batchIndex * 0.12}s`;
+            el.classList.add('is-visible');
+            observer.unobserve(el);
+          });
+      },
+      { threshold: 0.2 }
+    );
+
+    items.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -103,10 +131,13 @@ export const GalleryWall: React.FC = () => {
 
       {/* Editorial Masonry Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-        {GALLERY_ITEMS.map((item) => (
+        {GALLERY_ITEMS.map((item, index) => (
           <div
             key={item.id}
-            className={`group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#FAF8F5] border border-[#EAE2D8] shadow-sm ${item.spanClass || 'aspect-[3/4]'
+            ref={(el) => {
+              itemRefs.current[index] = el;
+            }}
+            className={`reveal-up reveal-up--soft group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#FAF8F5] border border-[#EAE2D8] shadow-sm ${item.spanClass || 'aspect-[3/4]'
               }`}
           >
             {item.type === 'video' ? (

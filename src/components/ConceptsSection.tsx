@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { STUDIO_INFO } from '../data/studioData';
 import { ArrowRight } from 'lucide-react';
 
@@ -78,6 +78,32 @@ const CONCEPT_CASES: ConceptCase[] = [
 ];
 
 export const ConceptsSection: React.FC = () => {
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Fade-up reveal for each case: runs once per case, then stops observing it
+  useEffect(() => {
+    const items = contentRefs.current.filter((el): el is HTMLDivElement => el !== null);
+
+    if (!('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    items.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="concepts" className="relative w-full">
       {CONCEPT_CASES.map((caseItem, index) => {
@@ -112,7 +138,11 @@ export const ConceptsSection: React.FC = () => {
 
             {/* 2. Main Content Container: Alternating Left / Right Split */}
             <div
-              className={`relative z-10 w-full max-w-6xl mx-auto flex flex-col ${
+              ref={(el) => {
+                contentRefs.current[index] = el;
+              }}
+              style={{ transitionDelay: `${index * 0.1}s` }}
+              className={`reveal-up relative z-10 w-full max-w-6xl mx-auto flex flex-col ${
                 isImageLeft ? 'lg:flex-row' : 'lg:flex-row-reverse'
               } items-center justify-between gap-8 lg:gap-16`}
             >

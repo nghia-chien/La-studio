@@ -89,6 +89,33 @@
   animation: maskedRise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Scroll reveal (toggled via IntersectionObserver) */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1),
+              transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up { opacity: 1; transform: none; transition: none; }
+}
+
+/* Softer variant for image groups: shorter travel, longer fade */
+.reveal-up.reveal-up--soft {
+  transform: translateY(16px);
+  transition-duration: 0.8s;
+}
+.reveal-up.reveal-up--soft.is-visible {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up.reveal-up--soft { transform: none; }
+}
+
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
